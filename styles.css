@@ -44,8 +44,12 @@ h3 {
   text-align: center;
 }
 
+
 button {
   margin: 20px;
   padding: 8px 20px;
   cursor: pointer;
+}
+#reset, #verify {
+  display: none;
 }
