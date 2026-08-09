@@ -1,4 +1,3 @@
-//your code here
 const container = document.getElementById("imageContainer");
 const heading = document.getElementById("h");
 const para = document.getElementById("para");
@@ -9,42 +8,45 @@ const imageClasses = ["img1", "img2", "img3", "img4", "img5"];
 
 let selectedImages = [];
 
-function shuffle(){
-	for(let i=arr.lentgh-1;i>0;i--){
-		const j=Math.floor(Math.random()*(i+1));
+// Correct Fisher-Yates shuffle
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
 
-	[array[i],array[j]]=[array[j],array[i]];
-		
-	}
-	return array;
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  return arr;
 }
-function createImages(){
-	container.InnerHtml="";
 
-	const duplicateIndex=Math.floor(Math.random()*imageClasses.length);
+// Create 6 images with one randomly selected duplicate
+function createImages() {
+  container.innerHTML = "";
 
-	const duplicate=imageClasses[duplicateIndex];
+  // Randomly choose one of the 5 image classes to duplicate
+  const randomIndex = Math.floor(Math.random() * imageClasses.length);
+  const duplicate = imageClasses[randomIndex];
 
-	const images=[...imageClasses,duplicate];
+  // Five unique images + one randomly selected duplicate
+  const images = [...imageClasses, duplicate];
 
-	shuffle(images);
+  // Shuffle all six images
+  shuffle(images);
 
-	images.forEach(function (className){
-		
-	const img = document.createElement("img");
+  images.forEach(function (className) {
+    const img = document.createElement("img");
 
     img.classList.add(className);
-
     img.addEventListener("click", selectImage);
 
     container.appendChild(img);
   });
 }
-// Handle image selection
+
+// Select an image
 function selectImage(event) {
   const clickedImage = event.target;
 
-  // Prevent selecting the same tile twice
   if (selectedImages.includes(clickedImage)) {
     return;
   }
@@ -52,10 +54,8 @@ function selectImage(event) {
   selectedImages.push(clickedImage);
   clickedImage.classList.add("selected");
 
-  // At least one image selected
   reset.style.display = "inline-block";
 
-  // Verify appears ONLY when exactly 2 images are selected
   if (selectedImages.length === 2) {
     verify.style.display = "inline-block";
   } else {
@@ -63,8 +63,7 @@ function selectImage(event) {
   }
 }
 
-
-// Reset button
+// Reset
 reset.addEventListener("click", function () {
   selectedImages.forEach(function (image) {
     image.classList.remove("selected");
@@ -80,7 +79,8 @@ reset.addEventListener("click", function () {
   heading.textContent =
     "Please click on the identical tiles to verify that you are not a robot.";
 });
-// Verify button
+
+// Verify
 verify.addEventListener("click", function () {
   if (selectedImages.length !== 2) {
     return;
@@ -96,13 +96,11 @@ verify.addEventListener("click", function () {
       "We can't verify you as a human. You selected the non-identical tiles.";
   }
 
-  // Hide Verify after clicking it
   verify.style.display = "none";
 });
 
-//Initial state
+// Initial state
+reset.style.display = "none";
+verify.style.display = "none";
 
-reset.style.display="none";
-verify.style.display="none";
-para.style.display="";
 createImages();
